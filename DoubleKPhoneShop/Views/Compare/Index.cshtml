@@ -1,0 +1,112 @@
+﻿@model IEnumerable<DoubleKPhoneShop.Models.CompareModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<datalist  id="phonelist" class="list">
+    @foreach(var item in @ViewBag.Phone)
+    {
+        <option>@item.ProductName</option>
+    }
+</datalist>
+<script>
+    function tryget() {
+        let list = document.getElementsByClassName("list")[0];
+
+        for (let i = 0; i < countries.length; i++) {
+            let option = document.createElement("option");
+            let text = document.createTextNode(countries[i].text);
+            option.appendChild(text);
+            list.appendChild(option);
+        }
+    }
+</script>
+<script>
+    $('#key').on('keydown', function (e) {
+        if (e.which == 13) {
+            $(this.form).submit();
+        }
+    });
+</script>
+@if (Model.Count() != 0)
+{
+    <h1>So sánh sản phẩm</h1>
+    <div class="form-group" >
+        <form class="form-group" action="@Url.Action("Find","Product")">
+            <input type="text" name=key id="key" placeholder="Nhập điện thoại cần so sánh:" list="phonelist" class="form-control" />           
+        </form> 
+    </div>
+    <div class="container">
+        <div class="row">
+            <h3>Thông Số Kĩ Thuật</h3>
+            @foreach (var product in Model)
+            {
+        <div class="col-md-6">
+            <table class="table table-striped table-hover">
+                <thead class="detail-header">
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Product.ProductName)</th>
+                        <td>@product.Product.ProductName</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Product.Screen)</th>
+                        <td>@product.Product.Screen</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Product.OperatingSystem)</th>
+                        <td>@product.Product.OperatingSystem</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Product.Cameras)</th>
+                        <td>@product.Product.Cameras</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Product.CPU)</th>
+                        <td>@product.Product.CPU</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Product.RAM)</th>
+                        <td>@product.Product.RAM</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Product.ROM)</th>
+                        <td>@product.Product.ROM</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Product.Batery)</th>
+                        <td>@product.Product.Batery</td>
+                    </tr>
+                </tbody>
+            </table>
+            <a style="float:left;" href="@Url.Action("Delete", "Compare",new { id=product.Product.ProductId })" class="btn btn-danger">Xoá</a>            
+            <form class="form-group form-inline" action="@Url.Action("AddItem","Cart")">
+                @*<a style="float:left;" href="@Url.Action("AddItem", "Cart",new { id=product.ProductId })" class="btn btn-info">Buy now</a>*@
+                <input class="form-control" type="number" min="1" max=@product.Product.Quantity value="1" name="quantity" />
+                <input type="submit" value="Buy now" class="btn btn-info" />
+                <input type="hidden" value="@product.Product.ProductId" name="id" />
+            </form>
+            <img style="height:200px;width:200px;" src="~/Images/@product.Product.Image" />
+        </div>
+                if (Model.Count() == 1)
+                {
+                    <div class="col-md-6">
+                        <a href="@Url.Action("Index", "Home")" class="btn btn-info">Thêm sản phẩm so sánh</a>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+}
+else
+{
+    <hr />
+    <p>Chọn sản phẩm để so sánh</p>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-info">Tìm sản phẩm</a>
+}
+
+
+

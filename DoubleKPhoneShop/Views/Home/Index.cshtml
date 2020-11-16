@@ -1,0 +1,186 @@
+﻿@model DoubleKPhoneShop.Models.ViewModel
+@{
+    ViewBag.Title = "Home Page";
+    int i = 0;
+}
+
+<hr />
+<div class="container" style="padding:0;">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        @*<ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+            <li data-target="#myCarousel" data-slide-to="3"></li>
+        </ol>*@
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+            <div class="item active brand">
+                <img src="~/Images/Ads/qc1.png" alt="Apple" style="width:100%;height:100%;">
+            </div>
+
+            <div class="item brand">
+                <img src="~/Images/Ads/qc2.png" alt="Samsung" style="width:100%;height:100%;">
+            </div>
+
+            <div class="item brand">
+                <img src="~/Images/Ads/qc3.png" alt="Oppo" style="width:100%;height:100%;">
+            </div>
+
+            <div class="item brand">
+                <img src="~/Images/Ads/qc4.png" alt="Nokia" style="width:100%;height:100%;">
+            </div>
+            <div class="item brand">
+                <img src="~/Images/Ads/qc5.png" alt="Nokia" style="width:100%;height:100%;">
+            </div>
+        </div>
+
+        <!-- Left and right controls -->
+        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        @foreach (var category in Model.Categories)
+        {
+            i = i + 1;
+
+            if (i == 6)
+            {
+                <div class="category col-md-2 table-bordered">
+                    <a class="more" href="javascript:;">Xem Thêm</a>
+                </div>
+            }
+            if (i < 6)
+            {
+                <div class="category col-md-2 table-bordered">
+                    <a href="@Url.Action("Find", "Product", new { category = category.CategoryName })">                        
+                        <img class="img-responsive" src="~/Images/@category.CategoryImage" />
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="category hide-product hide col-md-2 table-bordered">
+                    <a href="@Url.Action("Find", "Product", new { category = category.CategoryName })">
+                        <img class="img-responsive" src="~/Images/@category.CategoryImage" />
+                    </a>
+                </div>
+            }
+        }
+    </div>
+    <br />
+    <div class="filter">
+        @using (Ajax.BeginForm("Index", "Home", new { @class = "test" }, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            OnFailure = "searchFailed",
+            LoadingElementId = "ajax-loader",
+            HttpMethod = "POST",
+            UpdateTargetId = "content"
+        }, new { id = "testform" }))
+        {
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <div class="row">
+                        <label class="control-label col-md-2">Lọc theo giá: </label>
+                        <select id="price" name="price" class="form-control col-md-2">
+                            <option value="0">Bỏ lọc giá</option>
+                            <option value="2999999">Dưới 3 triệu</option>
+                            <option value="3000000">Từ 3 - 7 triệu</option>
+                            <option value="7000000">Từ 7 - 10 triệu</option>
+                            <option value="10000000">Từ trên 10 triệu</option>
+                            <option value="20000000">Từ trên 20 triệu</option>
+                        </select>
+                        <select id="order" name="order" class="form-control col-md-2">
+                            <option selected value="up">Tăng dần</option>
+                            <option value="down">Giảm dần</option>
+                        </select>
+                    </div>
+                    @*<div class="col-md-2">
+                        <input type="submit" value="Tìm" class="btn btn-default" />
+                    </div>*@
+                </div>
+            </div>
+        }
+        <form class="form-group form-inline" action="@Url.Action("Find","Product")">
+            <input style="width:101%;" type="text" name=key id="key" placeholder="Nhập điện thoại cần so sánh:" list="phonelist" class="form-control" />
+            @*<input class="form-control" type="submit" value="Tìm" />*@
+        </form>
+        <datalist id="phonelist" class="list">
+            @foreach (var item in @ViewBag.Phone)
+            {
+                <option>@item.ProductName</option>
+            }
+        </datalist>
+    </div>
+</div>
+
+<hr />
+<div class="container">
+    <section style="color:red;" class="product-partial" id="content">
+        @Html.Partial("_Products", Model)
+    </section>
+</div>
+<hr />
+
+
+
+<script>
+    $(document).ready(function () {          
+        $.ajax({
+            url: '/Home/Index',
+            data: { order: $("#order").val() },
+            type: 'POST',
+            dataType: 'html',
+        });
+        $("#testform").submit();      
+        $(".more").click(function () {
+            if ($(".hide-product").hasClass("hide")) {
+                $(".hide-product").removeClass("hide");
+                $(".more").text("Ẩn bớt");
+            }
+            else {
+                $(".hide-product").addClass("hide");
+                $(".more").text("Xem thêm");
+            }
+        });
+        $("#price").change(function () {            
+            $(this.form).submit();
+            $.ajax({
+                url: '/Home/Index',                
+                data: { price: $(this).val() },
+                type: 'POST',                             
+                dataType: 'html',
+            });            
+        });  
+        $("#order").change(function () {
+            $(this.form).submit();
+            $.ajax({
+                url: '/Home/Index',
+                data: { order: $(this).val() },
+                type: 'POST',
+                dataType: 'html',
+            });            
+        });  
+        $('.btn-cate').off('click').on('click', function () {            
+            $.ajax({
+                data: { category: $(this).data('category') },
+                url: '/Home/Index',
+                dataType: 'json',
+                type: 'GET',            
+            })            
+        });
+    });
+</script>

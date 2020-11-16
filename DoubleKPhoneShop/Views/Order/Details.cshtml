@@ -1,0 +1,77 @@
+﻿@model DoubleKPhoneShop.Models.Order
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div>
+    <h2 style="border:1px dashed aqua;text-align:center">Chi tiết đơn hàng</h2>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ApplicationUser.FullName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.FullName)
+        </dd>
+        <dt>
+            @Html.DisplayName("Số điện thoại khách")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.PhoneNumber)
+        </dd>
+        <dt>
+            @Html.DisplayName("Địa chỉ giao hàng")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderDate)
+        </dd>
+        <dt>
+            @Html.DisplayName("Trạng thái đơn hàng")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt>
+
+        </dt>
+    </dl>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayName("Tên mặt hàng")
+            </th>
+            <th>
+                @Html.DisplayName("Số lượng")
+            </th>
+            <th>@Html.DisplayName("Gía")</th>
+        </tr>
+        @foreach (var detai in Model.OrderDetails)
+        {
+
+            <tr>
+                <td>@Html.DisplayFor(item => detai.Product.ProductName)</td>
+                <td>@Html.DisplayFor(item => detai.Quantity)</td>      
+                <td>
+                    @Html.DisplayFor(item=>detai.Product.Price)
+                </td>
+            </tr>            
+        }
+        <tr><td>@Model.OrderDetails.Sum(o=>o.SumPay)</td></tr>
+    </table>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.OrderId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

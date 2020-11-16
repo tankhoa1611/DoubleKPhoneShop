@@ -1,0 +1,68 @@
+﻿@model DoubleKPhoneShop.Models.Category
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2 style="border:1px dashed aqua;text-align:center">Xoá hãng</h2>
+<h3>Bạn có chắc chắn muốn xoá?</h3>
+@*<div>        
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CategoryName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CategoryName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CategoryImage)
+        </dt>
+
+        <dd>
+            <img src="~/Images/@Model.CategoryImage" />
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>*@
+
+<div>
+    <table class="table">
+        <th>
+            @Html.DisplayNameFor(model => model.CategoryName)
+        </th>
+
+        <td>
+            @Html.DisplayFor(model => model.CategoryName)
+        </td>
+
+        <th>
+            @Html.DisplayNameFor(model => model.CategoryImage)
+        </th>
+
+        <td>
+            <img src="~/Images/@Model.CategoryImage" />
+        </td>
+
+    </table>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

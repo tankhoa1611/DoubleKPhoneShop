@@ -1,0 +1,67 @@
+﻿@model IEnumerable<DoubleKPhoneShop.Models.Product>
+
+@{
+    ViewBag.Title = "Find";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    function tryget() {
+        let list = document.getElementsByClassName("list")[0];
+
+        for (let i = 0; i < countries.length; i++) {
+            let option = document.createElement("option");
+            let text = document.createTextNode(countries[i].text);
+            option.appendChild(text);
+            list.appendChild(option);
+        }
+    }
+</script>
+
+@if (Model == null)
+{
+    <h1>không tìm thấy sản phẩm trùng khớp</h1>
+}
+@if (Model != null)
+{
+    if (Model.Count() != 0)
+    {
+        <h2>Danh sách cần tìm</h2>
+        <div class="container">
+            <div class="row">
+                @foreach (var product in Model)
+                {
+                    <div class="col-lg-3 col-md-6 card product-partial">
+                        <div class="card-body">
+                            <div>
+                                <img class="card-img" src="~/images/@product.Image" alt="">
+                            </div>
+                            <div class="card-infor">
+                                <div class="card-name">
+                                    @product.ProductName
+                                </div>
+                                <div class="card-price text-danger">
+                                    @product.Price.ToString("#,##0").Replace(',', '.') VNĐ
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">                                                   
+                            <form class="form-group" action="@Url.Action("AddItem","Cart")">
+                                <input class="form-control" type="number" min="1" max=@product.Quantity value="1" name="quantity" />
+                                <input type="submit" value="Buy now" class="btn btn-info form-control" />
+                                @Html.ActionLink("So sánh", "AddProduct","Compare", new { id = product.ProductId}, htmlAttributes: new { @class = "form-control btn btn-info" })
+                                <input type="hidden" value="@product.ProductId" name="id" />
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <h1>không tìm thấy sản phẩm trùng khớp</h1>
+    }
+}
+
+

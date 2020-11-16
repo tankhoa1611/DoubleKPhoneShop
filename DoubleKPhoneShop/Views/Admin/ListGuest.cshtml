@@ -1,0 +1,45 @@
+﻿@model IEnumerable<DoubleKPhoneShop.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "CustomerList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Khách hàng thân thiết</h2>
+
+<table class="table">
+    <tr>
+        <th>Họ tên</th>
+        <th>Email</th>
+        <th>Số điện thoại</th>
+        <th>Địa chỉ</th>
+        <th>Lịch sử đặt hàng</th>
+        <th>Khách hàng thân thiết</th>
+    </tr>
+    @foreach (var user in Model)
+    {
+        if (user.Orders.Count(x => x.UserId == user.Id) >= 5)
+        {
+            <tr style="color:aqua;">
+                <td>@user.FullName</td>
+                <td>@user.Email</td>
+                <td>@user.PhoneNumber</td>
+                <td>@user.Address</td>
+                <td>@user.Orders.Count(x => x.UserId == user.Id)</td>
+                <td><i class="glyphicon glyphicon-thumbs-up"></i></td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td>@user.FullName</td>
+                <td>@user.Email</td>
+                <td>@user.PhoneNumber</td>
+                <td>@user.Address</td>
+                <td>@user.Orders.Count(x => x.UserId == user.Id)</td>
+            </tr>
+        }
+    }
+</table>
+
+

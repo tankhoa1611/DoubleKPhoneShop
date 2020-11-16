@@ -1,0 +1,136 @@
+﻿@model IEnumerable<DoubleKPhoneShop.Models.Order>
+@{
+    ViewBag.Title = "CustomerCart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model.Count() == 0)
+{
+    <br />
+    <h1 class="text-info text-center">
+        Giỏ hàng của bạn rỗng!
+    </h1>
+    <hr />
+    <h2>Thêm vào giỏ hàng</h2>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-info">Tìm sản phẩm</a>
+}
+else
+{
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="table-responsive">
+                <h1>Giỏ Hàng</h1>
+                @foreach (var order in Model)
+                {
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Hình</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Đơn giá</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                        @foreach (var item in order.OrderDetails)
+                        {
+                            <tr>
+                                <td class="text-center"><img src="~/Images/@item.Product.Image" width="70" height="60" /> </td>
+                                <td><a target="_blank" href="@Url.Action("ChiTiet", "SanPham", new { id = item.Product.ProductId })"> @item.Product.ProductName </a> </td>
+                                <td>@item.Quantity</td>
+                                <td> @item.Product.Price.ToString("#,##0").Replace(',', '.') VNĐ </td>
+                                <td> @item.SumPay.ToString("#,##0").Replace(',', '.') VNĐ </td>
+                            </tr>
+                        }
+                        <tr>
+                            <td></td>
+                            <th class="text-right">Tổng số lượng:</th>
+                            <td> @order.OrderDetails.Sum(m => m.Quantity) </td>
+                            <th class="text-right">Tổng thành tiền:</th>
+                            <td>@order.OrderDetails.Sum(m => m.SumPay).ToString("#,##0").Replace(',', '.') VNĐ </td>
+                        </tr>
+                        <tr>
+                            <th>Ngày đặt</th>
+                            <td>@order.OrderDate</td>
+                            <th>Trạng thái</th>
+                            <td>@order.Status</td>
+                            <td>
+                                <button id="btnCancelCart" class="btn">Huỷ đơn hàng</button>
+                            </td>
+                        </tr>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@*<script>
+        var cart = {
+            init: function () {
+                cart.regEvents();
+            },
+            regEvents: function () {
+                $('#btnContinue').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    window.location.href = "/";
+                });
+                $('#btnPayment').off('click').on('click', function () {
+                    window.location.href = "/thanh-toan";
+                });
+                $('#btnUpdate').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    var listProduct = $('.txtQuantity');
+                    var cartList = [];
+                    $.each(listProduct, function (i, item) {
+                        cartList.push({
+                            Quantity: $(item).val(),
+                            Product: {
+                                ProductId: $(item).data('id')
+                            }
+                        });
+                    });
+
+                    $.ajax({
+                        url: '/Cart/Update',
+                        data: { cartModel: JSON.stringify(cartList) },
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.status == true) {
+                                window.location.href = "gio-hang";
+                            }
+                        }
+                    })
+                });
+
+                $('#btnDeleteAll').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/Cart/DeleteAll',
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.status == true) {
+                                window.location.href = "/gio-hang";
+                            }
+                        }
+                    })
+                });
+
+                $('.btn-delete').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        data: { id: $(this).data('id') },
+                        url: '/Cart/Delete',
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.status == true) {
+                                window.location.href = "/gio-hang";
+                            }
+                        }
+                    })
+                });
+            }
+        }
+        cart.init();
+    </script>*@

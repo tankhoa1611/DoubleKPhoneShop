@@ -1,0 +1,63 @@
+﻿@model IEnumerable<DoubleKPhoneShop.Models.Product>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2 style="border:1px dashed aqua;text-align:center">Danh sách sản phẩm</h2>
+<p>@Html.ActionLink("Thêm mới", "Create", null, htmlAttributes: new { @class = "btn btn-success" })</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Hãng")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Image)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateDate)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                <img style="height:50px;width:50px;" class="img-control img-responsive thumbnail" src="~/Images/@item.Image" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateDate)
+            </td>
+            <td>
+                <div class="btn-group">
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ProductId }, htmlAttributes: new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Details", "Details", new { id = item.ProductId }, htmlAttributes: new { @class = "btn btn-info" })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ProductId }, htmlAttributes: new { @class = "btn btn-danger" })
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>

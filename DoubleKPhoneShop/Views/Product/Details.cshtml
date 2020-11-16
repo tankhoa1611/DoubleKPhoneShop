@@ -1,0 +1,81 @@
+﻿@model DoubleKPhoneShop.Models.Product
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <h1>Điện thoại @Model.ProductName</h1>
+        <hr />
+        <div class="col-md-6">
+            <img src="~/Images/@Model.Image" />
+        </div>
+        <div class="col-md-6">
+            <h1 style="color:red;">@Model.Price.ToString("#,##0").Replace(',', '.') VNĐ </h1>
+            <hr />
+            <div style="width:50%;" class="btn-group btn-group-justified">
+                @*<a href="@Url.Action("AddItem", "Cart",new { id=Model.ProductId })" class="btn btn-info">Buy now</a>*@
+                <a style="width:100% !important" href="@Url.Action("AddProduct", "Compare",new { id=Model.ProductId })" class="btn btn-primary form-group">So sánh</a>
+            </div>
+            <form action="@Url.Action("AddItem","Cart")">
+                @*<a style="float:left;" href="@Url.Action("AddItem", "Cart",new { id=product.ProductId })" class="btn btn-info">Buy now</a>*@
+                <input class="form-control" type="number" min="1" max=@Model.Quantity value="1" name="quantity" />
+                <input type="submit" value="Buy now" class="btn btn-info" />
+                <input type="hidden" value="@Model.ProductId" name="id" />
+            </form>
+        </div>       
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-striped table-hover">
+                <thead class="detail-header">
+                    Thông Số Kĩ Thuật
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Screen)</th>
+                        <td>@Html.DisplayFor(model => model.Screen)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.OperatingSystem)</th>
+                        <td>@Html.DisplayFor(model => model.OperatingSystem)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Cameras)</th>
+                        <td>@Html.DisplayFor(model => model.Cameras)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.CPU)</th>
+                        <td>@Html.DisplayFor(model => model.CPU)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.RAM)</th>
+                        <td>@Html.DisplayFor(model => model.RAM)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.ROM)</th>
+                        <td>@Html.DisplayFor(model => model.ROM)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Batery)</th>
+                        <td>@Html.DisplayFor(model => model.Batery)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <p>@Model.Description</p>
+    </div>
+</div>
+
+<p>
+    @if (User.IsInRole("Admin"))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ProductId }) <span>/</span>  
+        @Html.ActionLink("Back to List", "Index")
+    }    
+</p>
