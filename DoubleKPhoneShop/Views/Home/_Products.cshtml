@@ -9,36 +9,122 @@
     <div class="row">
         @foreach (var product in Model.Products)
         {
-            <div class="col-lg-3 col-md-6 card product-partial">
-                <div class="card-body" onclick='location.href="@Url.Action("Details", "Product",new { id=product.ProductId })"'>
-                    <div>
-                        @if (product.Quantity == 0)
-                        {
-                            <img class="card-img" style="opacity:0.2" src="~/images/@product.Image" alt="">
-                        }
-                        else
-                        {
+            <!--if (product.Quantity != 0 || product.Status != "sold-out")
+            {
+                <div class="col-lg-3 col-md-6 card product-partial">
+                    <div class="card-body" onclick='location.href="@Url.Action("Details", "Product",new { id=product.ProductId })"'>
+                        <div style="color:orange;text-align:center;width:25%;border: 2px solid yellow; border-radius: 200px 25px;">
+                            @product.Status
+                        </div>
+                        <div>
                             <img class="card-img" src="~/images/@product.Image" alt="">
-                        }
+                        </div>
+                        <div class="card-infor">
+                            <div class="card-name">
+                                @product.ProductName
+                            </div>
+                            <div class="card-price text-danger">
+                                @product.Price.ToString("#,##0").Replace(',', '.') VNĐ
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-infor">
-                        <div class="card-name">
-                            @product.ProductName
-                        </div>
-                        <div class="card-price text-danger">
-                            @product.Price.ToString("#,##0").Replace(',', '.') VNĐ
-                        </div>
+                    <div class="card-footer">
+                        <form style="color:black" action="@Url.Action("AddItem","Cart")">-->
+                            @*<a style="float:left;" href="@Url.Action("AddItem", "Cart",new { id=product.ProductId })" class="btn btn-info">Buy now</a>*@
+                            <!--<input class="buy form-control" id="buy" type="number" min="1" max=@product.Quantity value="1" name="quantity" />
+                            <input class="buy form-control" type="submit" value="Buy now" />
+                            <input id="maxquantity" type="hidden" value="@product.ProductId" name="id" />
+                        </form>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <form action="@Url.Action("AddItem","Cart")">
-                        @*<a style="float:left;" href="@Url.Action("AddItem", "Cart",new { id=product.ProductId })" class="btn btn-info">Buy now</a>*@
-                        <input class="buy" id="buy" type="number" min="1" max=@product.Quantity value="1" name="quantity" />
-                        <input class="buy" type="submit" value="Buy now" />
-                        <input id="maxquantity" type="hidden" value="@product.ProductId" name="id" />
-                    </form>
+            }-->
+            if (product.Quantity == 0 && product.Status == "hot" || product.Status=="sold-out")
+            {
+                <div class="col-lg-3 col-md-6 card product-partial">
+                    <div class="card-body" onclick='location.href="@Url.Action("Details", "Product",new { id=product.ProductId })"'>
+                        <div style="color: red;text-align: center; width: 25%; border: 2px solid gray; border-radius: 200px 25px;">
+                            Sold-Out
+                        </div>
+                        <div>
+                            <img class="card-img" src="~/images/@product.Image" alt="">
+                        </div>
+                        <div class="card-infor">
+                            <div class="card-name">
+                                @product.ProductName
+                            </div>
+                            <div class="card-price text-danger">
+                                @product.Price.ToString("#,##0").Replace(',', '.') VNĐ
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <form style="color:black" action="@Url.Action("AddItem","Cart")">
+                            @*<a style="float:left;" href="@Url.Action("AddItem", "Cart",new { id=product.ProductId })" class="btn btn-info">Buy now</a>*@
+                            <input readonly class="buy form-control" id="buy" type="number" max=@product.Quantity value="0" name="quantity" />
+                            @*<input class="buy form-control" type="submit" value="Buy now" />*@
+                            <input id="maxquantity" type="hidden" value="@product.ProductId" name="id" />
+                        </form>
+                    </div>
                 </div>
-            </div>
+            }
+            if (product.Quantity != 0 && product.Status == "new")
+            {
+                <div class="col-lg-3 col-md-6 card product-partial">
+                    <div class="card-body" onclick='location.href="@Url.Action("Details", "Product",new { id=product.ProductId })"'>
+                        <div style="color:green;text-align:center;width:25%;border: 2px solid green; border-radius: 200px 25px;">
+                            @product.Status
+                        </div>
+                        <div>
+                            <img class="card-img" src="~/images/@product.Image" alt="">
+                        </div>
+                        <div class="card-infor">
+                            <div class="card-name">
+                                @product.ProductName
+                            </div>
+                            <div class="card-price text-danger">
+                                @product.Price.ToString("#,##0").Replace(',', '.') VNĐ
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <form style="color:black" action="@Url.Action("AddItem","Cart")">
+                            @*<a style="float:left;" href="@Url.Action("AddItem", "Cart",new { id=product.ProductId })" class="btn btn-info">Buy now</a>*@
+                            <input class="buy form-control" id="buy" type="number" min="1" max=@product.Quantity value="1" name="quantity" />
+                            <input class="buy form-control" type="submit" value="Buy now" />
+                            <input id="maxquantity" type="hidden" value="@product.ProductId" name="id" />
+                        </form>
+                    </div>
+                </div>
+            }
+            if (product.Quantity != 0 && product.Status == "hot")
+            {
+                <div class="col-lg-3 col-md-6 card product-partial">
+                    <div class="card-body" onclick='location.href="@Url.Action("Details", "Product",new { id=product.ProductId })"'>
+                        <div style="color:red;text-align:center;width:25%;border: 2px solid red; border-radius: 200px 25px;">
+                            @product.Status
+                        </div>
+                        <div>
+                            <img class="card-img" src="~/images/@product.Image" alt="">
+                        </div>
+                        <div class="card-infor">
+                            <div class="card-name">
+                                @product.ProductName
+                            </div>
+                            <div class="card-price text-danger">
+                                @product.Price.ToString("#,##0").Replace(',', '.') VNĐ
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <form style="color:black" action="@Url.Action("AddItem","Cart")">
+                            @*<a style="float:left;" href="@Url.Action("AddItem", "Cart",new { id=product.ProductId })" class="btn btn-info">Buy now</a>*@
+                            <input class="buy form-control" id="buy" type="number" min="1" max=@product.Quantity value="1" name="quantity" />
+                            <input class="buy form-control" type="submit" value="Buy now" />
+                            <input id="maxquantity" type="hidden" value="@product.ProductId" name="id" />
+                        </form>
+                    </div>
+                </div>
+            }
         }
     </div>
 </div>

@@ -23,10 +23,15 @@ namespace DoubleKPhoneShop
                 defaults: new { controller = "Cart", action = "Success", id = UrlParameter.Optional }                
                 );
             routes.MapRoute(
-                name: "Payment",
-                url: "thanh-toan",
+                name: "Checkout",
+                url: "xac-nhan-thanh-toan",
                 defaults: new { controller = "Cart", action = "Payment", id = UrlParameter.Optional }         
                 );
+            //routes.MapRoute(
+            //    name: "Payment",
+            //    url: "thanh-toan",
+            //    defaults: new { controller = "Cart", action = "Payment", id = UrlParameter.Optional }
+            //    );
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

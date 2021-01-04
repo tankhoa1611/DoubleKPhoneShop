@@ -1,0 +1,26 @@
+﻿@model IEnumerable<DoubleKPhoneShop.Models.PromotionCodeModel>
+@{
+    ViewBag.Title = "CreateCode";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<hr />
+<h1>Danh sách mã khuyến mãi</h1>
+@*<p>@Html.ActionLink("Thêm mới mã khuyến mãi", "CreateCode", null, htmlAttributes: new { @class = "btn btn-success" })</p>*@
+<table class="table">
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.CodeID)</th>
+        <th>@Html.DisplayNameFor(model => model.Code)</th>
+        <th>@Html.DisplayNameFor(model => model.Value)</th>
+        <th>@Html.DisplayNameFor(model => model.UseDate)</th>
+    </tr>
+    @foreach (var code in Model)
+    {
+<tr>
+    <td>@Html.DisplayFor(codeitem => code.CodeID)</td>
+    <td>@Html.DisplayFor(codeitem => code.Code)</td>
+    <td>@Html.DisplayFor(codeitem => code.Value)</td>
+    <td>@Html.DisplayFor(codeitem => code.UseDate)</td>
+</tr>        
+    }
+</table>
+

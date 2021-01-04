@@ -21,6 +21,16 @@ namespace DoubleKPhoneShop.Models
         public string UserId { get; set; }
         [DisplayName("Trạng thái đơn hàng")]
         public string Status { get; set; }
+        [DisplayName("Tình trạng thanh toán")]
+        public bool Pay { get; set; }
+        [DisplayName("Người nhận")]
+        public string Receiver { get; set; }
+        [DisplayName("Số Điện thoại người nhận")]
+        public string PhoneReceive { get; set; }
+        [DisplayName("Địa chỉ nhận hàng")]
+        public string AddressReceive { get; set; }
+        [DisplayName("Phương thức thanh toán")]
+        public string PaymentMethod { get; set; }
         [DisplayName("Tổng cộng")]
         public double TotalPay { get; set; }
         public virtual ApplicationUser ApplicationUser { get; set; }        

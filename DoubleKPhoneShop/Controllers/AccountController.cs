@@ -80,9 +80,9 @@ namespace DoubleKPhoneShop.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    
-                    var cartcustomer = db.Orders.Count(c => c.ApplicationUser.Email == model.Email);
-                    Session["cartcustomer"] = cartcustomer;                    
+
+                    //var cartcustomer = db.Orders.Count(c => c.ApplicationUser.Email == model.Email);                                      
+                    //Session["cartcustomer"] = cartcustomer;                    
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");

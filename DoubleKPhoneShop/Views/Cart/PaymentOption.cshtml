@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "PaymentOption";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>PaymentOption</h2>
+<form class="form-group form-inline" action="@Url.Action("Payment","Cart")">
+    @*<input style="width:101%;" type="text" name=key id="key" placeholder="Nhập điện thoại cần so sánh:" list="phonelist" class="form-control" />*@
+    @*<input class="form-control" type="submit" value="Tìm" />*@
+    <label>Đã có tài khoản?</label>
+    <input type="checkbox" name="check" id="check" value="user" />
+    <label>Thanh toán nhanh</label>
+    <input type="radio" name="check" id="check" value="guest" />
+    <input type=""
+</form>
+

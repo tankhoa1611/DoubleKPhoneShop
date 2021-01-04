@@ -1,162 +1,203 @@
-﻿@model IEnumerable<DoubleKPhoneShop.Models.CartItem>
-
+﻿@model IEnumerable<DoubleKPhoneShop.Models.Order>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "CustomerCart";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var b1 = "#90CDC3";
+    var c1 = "#fbecdb";
+    var b2 = "#c2e9f2";
+    var c2 = "#667bf2";
+    var b3 = "#a0a4f2";
+    var c3 = "#085f63";
+    var b4 = "#fbc1d0";
+    var c4 = "#f20544";
+    var b5 = "#0c0a40";
+    var c5 = "#beeef7";
+    var b6 = "#f2d091";
+    var c6 = "#d97925";
+    var b = "white";
+    var c = "black";
+
 }
 
+<h1>Lịch sử đặt hàng</h1>
 @if (Model.Count() == 0)
 {
+    <br />
+    <h1 class="text-info text-center">
+        Bạn chưa đặt đơn hàng nào
+    </h1>
     <hr />
-    <p class="text-info text-center">
-        Giỏ hàng của bạn rỗng!
-    </p>
-    <p>Chọn sản phẩm thêm vào</p>
-    <a href="@Url.Action("Index", "Home")" class="btn btn-info">Thêm sản phẩm</a>
+    <h2>Tìm sản phẩm để đặt</h2>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-info">Tìm sản phẩm</a>
 }
 else
-{    
-    <div  style="width:200px;margin-right:auto;margin-left:auto">
-        @*<p1>Welcome</p1>*@
-        <br />
-        <marquee style="font-size:40px;" Scrollamount="10" behavior="alternate">Shopping</marquee>
-    </div>
-    <hr />
-
+{
     <div class="row">
         <div class="col-sm-12">
             <div class="table-responsive">
-                <table class="table table-bordered">
+                <table class="table">
                     <tr>
-                        <th>Hình</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Số lượng</th>
-                        <th>Đơn giá</th>
-                        <th>Thành tiền</th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.OrderDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TotalPay)
+                        </th>
                         <th></th>
                     </tr>
                     @foreach (var item in Model)
                     {
-                        <tr>
-                            <td class="text-center"><img src="~/Images/@item.Product.Image" width="70" height="60" /> </td>
-                            <td><a target="_blank" href="@Url.Action("ChiTiet", "SanPham", new { id = item.Product.ProductId })"> @item.Product.ProductName </a> </td>
-                            <td>
-                                <form action="@Url.Action("SuaSoLuong")" method="get">
-                                    @*<input type="hidden" name="SanPhamID" value="@item.Product.ProductId" />*@
-                                    <input id="quantity" readonly type="number" max=@item.Quantity class="txtQuantity" data-id="@item.Product.ProductId" @*name="soluongmoi"*@ value="@item.Quantity" />
-                                    <input type="hidden" id="maxquantity" value=@item.Product.Quantity />
-                                    <p id="err" class="text-danger"></p>
-                                    @*<button type="submit" class="btn btn-primary btn-sm"> Cập nhật </button>*@
-                                </form>
-                            </td>
-                            <td> @item.Product.Price.ToString("#,##0").Replace(',', '.') VNĐ </td>
-                            <td> @item.ThanhTien.ToString("#,##0").Replace(',', '.') VNĐ </td>
-
-                            <td><a href="#" data-id="@item.Product.ProductId" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?');" class="btn-delete btn btn-danger btn-sm">Xóa</a></td>
-                        </tr>
+                        if (item.Status == "notconfirm")
+                        {
+                            c = c1;
+                            b = b1;
+                        }
+                        if (item.Status == "confirmed")
+                        {
+                            c = c2;
+                            b = b2;
+                        }
+                        if (item.Status == "wait")
+                        {
+                            c = c3;
+                            b = b3;
+                        }
+                        if (item.Status == "cancel")
+                        {
+                            c = c4;
+                            b = b4;
+                        }
+                        if (item.Status == "shipping")
+                        {
+                            c = c5;
+                            b = b5;
+                        }
+                        if (item.Status == "done")
+                        {
+                            c = c6;
+                            b = b6;
+                        }
+                        if (item.Status != "done" && item.Status != "shipping" && item.Status != "cancel")
+                        {
+                            <tr style="background-color:@b;color:@c">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OrderDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalPay)
+                                </td>
+                                <td>
+                                    <a class="btn" style="background-color:whitesmoke" href="@Url.Action("Details", "Order", new { id = item.OrderId })">
+                                        Chi tiết đơn hàng
+                                    </a>
+                                    <a class="btn" style="background-color:whitesmoke" href="@Url.Action("Cancel", "Order", new { id = item.OrderId })">
+                                        Hủy đơn hàng
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr style="background-color:@b;color:@c">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OrderDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalPay)
+                                </td>
+                                <td>
+                                    <a class="btn" style="background-color:whitesmoke" href="@Url.Action("Details", "Order", new { id = item.OrderId })">
+                                        Chi tiết đơn hàng
+                                    </a>
+                                </td>
+                            </tr>
+                        }
                     }
-                    <tr>
-                        <td></td>
-                        <td class="text-right">Tổng số lượng:</td>
-                        <td> @Model.Sum(m => m.Quantity) </td>
-                        <td class="text-right">Tổng thành tiền:</td>
-                        <td>@Model.Sum(m => m.ThanhTien).ToString("#,##0").Replace(',', '.') VNĐ </td>
-                    </tr>
+
                 </table>
-            </div>
-            <div>
-                <button id="btnContinue" class="btn">Tiếp tục mua hàng</button>
-                @*<button id="btnUpdate" class="btn">Cập nhật giỏ hàng</button>*@
-                <button id="btnDeleteAll" class="btn">Xoá giỏ hàng</button>
-                <button id="btnPayment" class="btn">Thanh toán</button>
+
             </div>
         </div>
     </div>
 }
 
-<script>
-    var cart = {
-        init: function () {
-            cart.regEvents();
-        },
-        regEvents: function () {
-            $('#btnContinue').off('click').on('click', function (e) {
-                e.preventDefault();
-                window.location.href = "/";
-            });
-            $('#btnPayment').off('click').on('click', function () {
-                window.location.href = "/thanh-toan";
-            });
-            $('#btnUpdate').off('click').on('click', function (e) {
-                e.preventDefault();
-                var listProduct = $('.txtQuantity');
-                var cartList = [];
-                $.each(listProduct, function (i, item) {
-                    cartList.push({
-                        Quantity: $(item).val(),
-                        Product: {
-                            ProductId: $(item).data('id')
-                        }
+@*<script>
+        var cart = {
+            init: function () {
+                cart.regEvents();
+            },
+            regEvents: function () {
+                $('#btnContinue').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    window.location.href = "/";
+                });
+                $('#btnPayment').off('click').on('click', function () {
+                    window.location.href = "/thanh-toan";
+                });
+                $('#btnUpdate').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    var listProduct = $('.txtQuantity');
+                    var cartList = [];
+                    $.each(listProduct, function (i, item) {
+                        cartList.push({
+                            Quantity: $(item).val(),
+                            Product: {
+                                ProductId: $(item).data('id')
+                            }
+                        });
                     });
+
+                    $.ajax({
+                        url: '/Cart/Update',
+                        data: { cartModel: JSON.stringify(cartList) },
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.status == true) {
+                                window.location.href = "gio-hang";
+                            }
+                        }
+                    })
                 });
 
-                $.ajax({
-                    url: '/Cart/Update',
-                    data: { cartModel: JSON.stringify(cartList) },
-                    dataType: 'json',
-                    type: 'POST',
-                    success: function (res) {
-                        if (res.status == true) {
-                            window.location.href = "gio-hang";
+                $('#btnDeleteAll').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/Cart/DeleteAll',
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.status == true) {
+                                window.location.href = "/gio-hang";
+                            }
                         }
-                    }
-                })
-            });
+                    })
+                });
 
-            $('#btnDeleteAll').off('click').on('click', function (e) {
-                e.preventDefault();
-                $.ajax({
-                    url: '/Cart/DeleteAll',
-                    dataType: 'json',
-                    type: 'POST',
-                    success: function (res) {
-                        if (res.status == true) {
-                            window.location.href = "/gio-hang";
+                $('.btn-delete').off('click').on('click', function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        data: { id: $(this).data('id') },
+                        url: '/Cart/Delete',
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.status == true) {
+                                window.location.href = "/gio-hang";
+                            }
                         }
-                    }
-                })
-            });
-
-            $('.btn-delete').off('click').on('click', function (e) {
-                e.preventDefault();
-                $.ajax({
-                    data: { id: $(this).data('id') },
-                    url: '/Cart/Delete',
-                    dataType: 'json',
-                    type: 'POST',
-                    success: function (res) {
-                        if (res.status == true) {
-                            window.location.href = "/gio-hang";
-                        }
-                    }
-                })
-            });
-        }
-    }
-    cart.init();
-</script>
-<script>
-    $(document).ready(function () {
-        $('#quantity').on('keyup', function () {
-            var that = $(this);            
-            var max = $('#maxquantity').val();
-            if (that.val() <= max && that.val() >= 1) {
-                $('#err').empty();
-                $('#btnUpdate').removeClass('hide');
-            } else {
-                $('#err').empty().html('số lượng không hợp lệ');
-                $('#btnUpdate').addClass('hide');
+                    })
+                });
             }
-        })
-    });
-</script>
+        }
+        cart.init();
+    </script>*@

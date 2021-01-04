@@ -21,8 +21,14 @@ namespace DoubleKPhoneShop.Models
         }
         [DisplayName("Họ tên")]
         public string FullName { get; set; }
+        //[DisplayName("Mã khuyến mãi")]
+        //public string PromotionCode { get; set; }
+        public ICollection<PromotionCodeModel> promotionCodeModels { get; set; }
+
         [DisplayName("Địa chỉ")]
         public string Address { get; set; }
+        [DisplayName("Điểm tích lũy")]
+        public double Point { get; set; }
         //[DisplayName("Số dư tài khoản")]
         //public double TotalMoney { get; set; }
         public ICollection<Order> Orders { get; set; }
@@ -39,9 +45,13 @@ namespace DoubleKPhoneShop.Models
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<PromotionCodeModel> PromotionCodeModels { get; set; }
+        
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
-        }        
+        }
+
+        //public System.Data.Entity.DbSet<DoubleKPhoneShop.Models.ApplicationUser> ApplicationUsers { get; set; }
     }
 }

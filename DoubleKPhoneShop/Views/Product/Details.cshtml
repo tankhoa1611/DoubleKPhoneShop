@@ -7,22 +7,39 @@
 
 <div class="container">
     <div class="row">
-        <h1>Điện thoại @Model.ProductName</h1>
+        <h1>@Model.ProductName</h1>
         <hr />
         <div class="col-md-6">
-            <img src="~/Images/@Model.Image" />
+            <img class="img-responsive" style="width:50%;box-sizing:content-box;" src="~/Images/@Model.Image" />
         </div>
         <div class="col-md-6">
             <h1 style="color:red;">@Model.Price.ToString("#,##0").Replace(',', '.') VNĐ </h1>
-            <hr />
-            <div style="width:50%;" class="btn-group btn-group-justified">
-                @*<a href="@Url.Action("AddItem", "Cart",new { id=Model.ProductId })" class="btn btn-info">Buy now</a>*@
-                <a style="width:100% !important" href="@Url.Action("AddProduct", "Compare",new { id=Model.ProductId })" class="btn btn-primary form-group">So sánh</a>
-            </div>
-            <form action="@Url.Action("AddItem","Cart")">
+            <hr />         
+            <form class="form-group" action="@Url.Action("AddItem","Cart")">
                 @*<a style="float:left;" href="@Url.Action("AddItem", "Cart",new { id=product.ProductId })" class="btn btn-info">Buy now</a>*@
                 <input class="form-control" type="number" min="1" max=@Model.Quantity value="1" name="quantity" />
-                <input type="submit" value="Buy now" class="btn btn-info" />
+                <div style="width:100%" class="btn-group">
+                    <a style="width:50%" href="@Url.Action("AddProduct", "Compare",new { id=Model.ProductId })" class="btn btn-primary form-control">So sánh</a>
+                    <input style="width:100%" type="submit" value="Buy now" class="btn btn-info form-control" />
+                </div>                
+                <input type="hidden" value="@Model.ProductId" name="id" />
+            </form>
+            <hr />
+            <form class="form-horizontal row" action="@Url.Action("Rating","Product")">
+                <div class="form-group">
+                    <input id="rate" style="background-color:azure;color:gray" class="col-md-6" type="range" min=1 max=5 value=@Model.Rate name="rate" />
+                    <input id="rateval" style="text-align:center" type="text" readonly value=@Model.Rate class="form-control col-md-2" />
+                </div>
+                <hr />
+                <div class="form-group">
+                    <span id="star" style="font-size:25px;" class="control-label glyphicon col-md-offset-2 col-md-2 glyphicon-star"></span>
+                    <input style="text-align:center" type="text" readonly value=@Model.Rate class="form-control col-md-10" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-2">Lượt Rate</label>
+                    <input style="text-align:center" type="text" readonly value=@Model.RateCount class="form-control col-md-10" />
+                </div>
+                <input type="submit" value="Rate" class="btn col-md-12 btn-info" />
                 <input type="hidden" value="@Model.ProductId" name="id" />
             </form>
         </div>       
@@ -79,3 +96,44 @@
         @Html.ActionLink("Back to List", "Index")
     }    
 </p>
+<script>
+    $(document).ready(function () {
+        $('#rate').on('change', function () {            
+            var rate = $('#rate').val();
+            $('#rateval').val(rate);
+            var star = $('#star');            
+            if (rate >= 1 && rate <= 2) {                
+                star.css("color", "red");
+            }
+            if (rate >= 2 && rate <= 3) {                
+                star.css("color", "orange");
+            }
+            if (rate >= 3 && rate <= 4) {                
+                star.css("color", "deepskyblue");
+            }
+            if (rate >= 4 && rate <= 5) {                
+                star.css("color", "blue");
+            }
+            if (rate >= 5) {               
+                star.css("color", "green");
+            }                 
+        })
+        var rate = $('#rate').val();
+        var star = $('#star');
+        if (rate >= 1 && rate <= 2) {
+            star.css("color", "red");
+        }
+        if (rate >= 2 && rate <= 3) {
+            star.css("color", "orange");
+        }
+        if (rate >= 3 && rate <= 4) {
+            star.css("color", "deepskyblue");
+        }
+        if (rate >= 4 && rate <= 4.5) {
+            star.css("color", "blue");
+        }
+        if (rate >= 4.5 && rate <= 5) {
+            star.css("color", "green");
+        }  
+    });
+</script>
