@@ -2,6 +2,20 @@
 
 @{
     ViewBag.Title = "Index";
+    var b1 = "#90CDC3";
+    var c1 = "#fbecdb";
+    var b2 = "#c2e9f2";
+    var c2 = "#667bf2";
+    var b3 = "#a0a4f2";
+    var c3 = "#085f63";
+    var b4 = "#fbc1d0";
+    var c4 = "#f20544";
+    var b5 = "#0c0a40";
+    var c5 = "#beeef7";
+    var b6 = "#f2d091";
+    var c6 = "#d97925";
+    var b = "white";
+    var c="black";
 }
 
 <h2>Lịch sử giao dịch</h2>
@@ -14,24 +28,61 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.OrderDate)
-        </th> 
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ApplicationUser.FullName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OrderDate)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.OrderId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.OrderId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.OrderId })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        if (item.Status == "notconfirm")
+        {
+            c = c1;
+            b = b1;
+        }
+        if (item.Status == "confirmed")
+        {
+            c = c2;
+            b = b2;
+        }
+        if (item.Status == "wait")
+        {
+            c = c3;
+            b = b3;
+        }
+        if (item.Status == "cancel")
+        {
+            c = c4;
+            b = b4;
+        }
+        if (item.Status == "shipping")
+        {
+            c = c5;
+            b = b5;
+        }
+        if (item.Status == "done")
+        {
+            c = c6;
+            b = b6;
+        }
+        <tr style="background-color: @b; color: @c">
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUser.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.OrderId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.OrderId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.OrderId }) |
+            </td>
+        </tr>
+    }
 
 </table>

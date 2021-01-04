@@ -9,6 +9,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">    
     @*<script src="~/Scripts/jquery-1.10.2.js"></script>*@
     @*<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>*@
     @Styles.Render("~/Content/css")
@@ -24,7 +25,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("DK-PHONE", "Index", "Home", new { area = "" }, new { @image = "~/Image/logo.png", @class = "shop-brand navbar-brand" })
+                @Html.ActionLink("K-PHONE", "Index", "Home", new { area = "" }, new { @image = "~/Image/logo.png", @class = "shop-brand navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -41,15 +42,15 @@
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Quản lý giao dịch<span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="@Url.Action("Index", "Order")">Lịch sử đặt hàng</a></li>
-                                <li><a href="#">Gíam sát giao hàng</a></li>
+                                <li><a href="@Url.Action("Index", "Order")">Giám sát đơn hàng</a></li>
+                                @*<li><a href="#">Gíam sát giao hàng</a></li>*@
                             </ul>
                         </li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Quản lý khách hàng<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="@Url.Action("ListGuest", "Admin")">Thông tin khách hàng</a></li>
-                                <li><a href="#">Khuyến mãi khách hàng</a></li>                                
+                                <li><a href="@Url.Action("CreateCode", "Admin")">Khuyến mãi khách hàng</a></li>
                             </ul>
                         </li>
 
@@ -57,12 +58,16 @@
                     else
                     {
                         <li>@Html.ActionLink("So sánh Sản phẩm", "Index", "Compare")</li>
-                        <li>@Html.ActionLink("Shopping", "Index", "Cart")</li>
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            <li>@Html.ActionLink("Lịch sử đặt hàng", "Index", "Cart")</li>
+                            <li>@Html.ActionLink("Thông tin cá nhân", "UserPromotionCode", "Cart")</li>
+                        }
                     }
-                </ul>                
+                </ul>
                 @Html.Partial("_LoginPartial")
                 <script>
-                    
+
                 </script>
             </div>
         </div>
@@ -71,7 +76,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - DK-PHONE Nguyễn Tân Khoa - Nguyễn Đăng Khoa</p>
+            <p>&copy; @DateTime.Now.Year - DK-PHONE Nguyễn Tân Khoa - Nguyễn Đăng Khoa - Dương Minh Tâm</p>
         </footer>
     </div>
 

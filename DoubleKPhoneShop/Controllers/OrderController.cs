@@ -24,6 +24,7 @@ namespace DoubleKPhoneShop.Controllers
 
         // GET: Order/Details/5
         public ActionResult Details(int? id)
+
         {
             if (id == null)
             {
@@ -69,7 +70,7 @@ namespace DoubleKPhoneShop.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = db.Orders.Find(id);
+            Order order = db.Orders.Where(o => o.OrderId == id).Include(d => d.OrderDetails.Select(p => p.Product)).FirstOrDefault();
             if (order == null)
             {
                 return HttpNotFound();
@@ -83,13 +84,60 @@ namespace DoubleKPhoneShop.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "OrderId,OrderDate,UserId")] Order order)
+        public ActionResult Edit([Bind(Include = "OrderId,UserId, OrderDate,Receiver,PhoneReceive,AddressReceive,PaymentMethod,TotalPay")] Order order, string status)
         {
             if (ModelState.IsValid)
             {
+                order.Status = status;                
                 db.Entry(order).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
+            }
+            ViewBag.UserId = new SelectList(db.Users, "Id", "FullName", order.UserId);
+            return View(order);
+        }    
+        // GET: Order/Edit/5
+        public ActionResult Cancel(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Order order = db.Orders.Where(o => o.OrderId == id).Include(d => d.OrderDetails.Select(p => p.Product)).FirstOrDefault();
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.UserId = new SelectList(db.Users, "Id", "FullName", order.UserId);
+            return View(order);
+        }
+
+        // POST: Order/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Cancel([Bind(Include = "OrderId,UserId, OrderDate,Receiver,PhoneReceive,AddressReceive,PaymentMethod,TotalPay")] Order order,int? id)
+        {
+            var o = db.OrderDetails.Where(d => d.OrderId == id).ToList();            
+            foreach(var item in o)
+            {
+                var pr = db.Products.Where(a => a.ProductId == item.ProductId).First();
+                if (pr != null)
+                {
+                    pr.Quantity = pr.Quantity + item.Quantity;
+                    db.Entry(pr).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+       
+            if (ModelState.IsValid)
+            {
+                order.Status = "cancel";
+                //order.OrderDate = DateTime.Now;                
+                db.Entry(order).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index","Cart");
             }
             ViewBag.UserId = new SelectList(db.Users, "Id", "FullName", order.UserId);
             return View(order);
@@ -116,7 +164,7 @@ namespace DoubleKPhoneShop.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Order order = db.Orders.Find(id);
-            db.Orders.Remove(order);
+            db.Orders.Remove(order);            
             db.SaveChanges();
             return RedirectToAction("Index");
         }

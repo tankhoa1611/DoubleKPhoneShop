@@ -46,6 +46,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PayPal, Version=1.9.1.0, Culture=neutral, PublicKeyToken=5b4afc1ccaef40fb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PayPal.1.9.1\lib\net451\PayPal.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -181,15 +184,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202007150333369_InitialCreate.cs" />
-    <Compile Include="Migrations\202007150333369_InitialCreate.Designer.cs">
-      <DependentUpon>202007150333369_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202007150409286_updatedb.cs" />
-    <Compile Include="Migrations\202007150409286_updatedb.Designer.cs">
-      <DependentUpon>202007150409286_updatedb.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CartItem.cs" />
     <Compile Include="Models\Category.cs" />
@@ -199,7 +193,9 @@
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\Payment.cs" />
+    <Compile Include="Models\PaypalConfiguration.cs" />
     <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\PromotionCodeModel.cs" />
     <Compile Include="Models\ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -294,7 +290,6 @@
     <Content Include="Views\Order\Create.cshtml" />
     <Content Include="Views\Order\Delete.cshtml" />
     <Content Include="Views\Order\Details.cshtml" />
-    <Content Include="Views\Order\Edit.cshtml" />
     <Content Include="Views\Order\Index.cshtml" />
     <Content Include="Views\OrderDetail\Create.cshtml" />
     <Content Include="Views\OrderDetail\Delete.cshtml" />
@@ -314,7 +309,6 @@
     <Content Include="Views\Home\_Products.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\Cart\Success.cshtml" />
-    <Content Include="Views\Cart\Payment.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\Product\Details.cshtml" />
     <Content Include="Views\Product\Create.cshtml" />
@@ -324,6 +318,15 @@
     <Content Include="Views\Admin\ListGuest.cshtml" />
     <Content Include="Views\Compare\Index.cshtml" />
     <Content Include="Views\Product\Find.cshtml" />
+    <Content Include="Views\Order\Cancel.cshtml" />
+    <Content Include="Views\Cart\PaymentOption.cshtml" />
+    <Content Include="Views\Cart\Payment.cshtml" />
+    <Content Include="Views\Cart\Check.cshtml" />
+    <Content Include="Views\Product\Rating.cshtml" />
+    <Content Include="Views\Admin\CreateCode.cshtml" />
+    <Content Include="Views\Cart\UserPromotionCode.cshtml" />
+    <Content Include="Views\Order\Edit.cshtml" />
+    <Content Include="Views\Admin\SendGuestCode.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -340,14 +343,6 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202007150333369_InitialCreate.resx">
-      <DependentUpon>202007150333369_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202007150409286_updatedb.resx">
-      <DependentUpon>202007150409286_updatedb.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

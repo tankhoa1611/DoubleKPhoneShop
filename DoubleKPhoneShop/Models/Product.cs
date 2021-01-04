@@ -19,6 +19,10 @@ namespace DoubleKPhoneShop.Models
         [DisplayName("Miêu tả")]
         [StringLength(5000, ErrorMessage = "{0} phải ít nhất {2} và ít hơn {1} kí tự.", MinimumLength = 2)]
         public string Description { get; set; }
+        [DisplayName("Đánh giá sản phẩm")]        
+        public double Rate { get; set; }
+        [DisplayName("lượt đánh giá")]
+        public int RateCount { get; set; }
         [DisplayName("Hình ảnh")]
         public string Image { get; set; }
         [DisplayName("Giá sản phẩm")]
@@ -54,5 +58,7 @@ namespace DoubleKPhoneShop.Models
         [StringLength(50, ErrorMessage = "{0} phải ít nhất {2} và ít hơn {1} kí tự.", MinimumLength = 2)]
         [DisplayName("Pin")]
         public string Batery { get; set; }
+        [DisplayName("Trạng thái")]
+        public string Status { get; set; }
     }
 }

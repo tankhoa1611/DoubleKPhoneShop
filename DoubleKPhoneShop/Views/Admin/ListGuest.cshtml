@@ -14,20 +14,25 @@
         <th>Số điện thoại</th>
         <th>Địa chỉ</th>
         <th>Lịch sử đặt hàng</th>
+        <th>Điểm tích lũy</th>
         <th>Khách hàng thân thiết</th>
+        <th></th>
     </tr>
     @foreach (var user in Model)
     {
         if (user.Orders.Count(x => x.UserId == user.Id) >= 5)
         {
-            <tr style="color:aqua;">
-                <td>@user.FullName</td>
-                <td>@user.Email</td>
-                <td>@user.PhoneNumber</td>
-                <td>@user.Address</td>
-                <td>@user.Orders.Count(x => x.UserId == user.Id)</td>
-                <td><i class="glyphicon glyphicon-thumbs-up"></i></td>
-            </tr>
+<tr style="color:aqua;">
+    <td>@user.FullName</td>
+    <td>@user.Email</td>
+    <td>@user.PhoneNumber</td>
+    <td>@user.Address</td>
+    <td>@user.Orders.Count(x => x.UserId == user.Id)</td>
+    <td>@user.Point</td>
+    <td><i class="glyphicon glyphicon-thumbs-up"></i></td>
+    <td>@Html.ActionLink("Tặng mã KM", "SendGuestCode", new { id = user.Id }, new { @class = "btn btn-default" })</td>
+    <td></td>
+</tr>
         }
         else
         {
@@ -37,6 +42,8 @@
                 <td>@user.PhoneNumber</td>
                 <td>@user.Address</td>
                 <td>@user.Orders.Count(x => x.UserId == user.Id)</td>
+                <td>@user.Point</td>
+                <td>@Html.ActionLink("Tặng mã KM", "SendGuestCode", new { id = user.Id }, new { @class = "btn btn-default" })</td>
             </tr>
         }
     }

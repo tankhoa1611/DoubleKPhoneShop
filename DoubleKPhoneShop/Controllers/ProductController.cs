@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using DoubleKPhoneShop.Models;
@@ -14,6 +15,7 @@ namespace DoubleKPhoneShop.Controllers
     public class ProductController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        
 
         // GET: Product
         [Authorize(Roles = "Admin")]
@@ -21,6 +23,33 @@ namespace DoubleKPhoneShop.Controllers
         {
             var products = db.Products.Include(p => p.Category);
             return View(products.ToList());
+        }
+        [Authorize]
+        public ActionResult Rating(double rate,int id)
+        {
+            var product = db.Products.Include(p => p.Category).Where(p=>p.ProductId == id).First();
+            if (product.Rate != 0)
+            {
+                product.Rate = (product.Rate + rate) / 2;
+            }
+            else
+                product.Rate = (product.Rate + rate);
+            product.RateCount = product.RateCount + 1;
+            db.Entry(product).State = EntityState.Modified;
+            db.SaveChanges();
+            ////
+            //var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            //var stringChars = new char[8];
+            //var random = new Random();
+
+            //for (int i = 0; i < stringChars.Length; i++)
+            //{
+            //    stringChars[i] = chars[random.Next(chars.Length)];
+            //}
+
+            //var finalString = new String(stringChars);
+            ////
+            return View(product);
         }
 
         public ActionResult Find(string category,string key)
@@ -71,7 +100,7 @@ namespace DoubleKPhoneShop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public ActionResult Create([Bind(Include = "ProductId,ProductName,Description,Image,Price,Quantity,Color,CreateDate,CategoryId,Screen,OperatingSystem,Cameras,CPU,RAM,ROM,Batery")] Product product,string color, HttpPostedFileBase Image)
+        public ActionResult Create([Bind(Include = "ProductId,ProductName,Description,Image,Price,Quantity,Color,CreateDate,CategoryId,Screen,OperatingSystem,Cameras,CPU,RAM,ROM,Batery")] Product product,string color, HttpPostedFileBase Image,string status)
         {
             if (ModelState.IsValid)
             {
@@ -92,6 +121,7 @@ namespace DoubleKPhoneShop.Controllers
                 }
                 product.CreateDate = DateTime.Now;
                 product.Color = color;
+                product.Status = status;
                 db.Products.Add(product);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -125,7 +155,7 @@ namespace DoubleKPhoneShop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public ActionResult Edit([Bind(Include = "ProductId,ProductName,Description,Image,Price,Quantity,Color,s,CategoryId,Screen,OperatingSystem,Cameras,CPU,RAM,ROM,Batery")] Product product,int? id, string color, HttpPostedFileBase Image)
+        public ActionResult Edit([Bind(Include = "ProductId,ProductName,Description,Image,Price,Quantity,Color,s,CategoryId,Screen,OperatingSystem,Cameras,CPU,RAM,ROM,Batery")] Product product,int? id, string color, HttpPostedFileBase Image,string status)
         {
             if (ModelState.IsValid)
             {
@@ -146,6 +176,7 @@ namespace DoubleKPhoneShop.Controllers
                 }
                 product.CreateDate = db.Products.Where(o => o.ProductId == id).Select(o => o.CreateDate).FirstOrDefault();                
                 product.Color = color;
+                product.Status = status;
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

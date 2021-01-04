@@ -1,11 +1,32 @@
 ﻿@model DoubleKPhoneShop.Models.Order
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Cancel";
 }
 
-<div>
-    <h2 style="border:1px dashed aqua;text-align:center">Chi tiết đơn hàng</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h1>Hủy đơn hàng</h1>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.OrderId)
+
+    <div class="form-group">        
+        <div class="col-md-10">
+            @Html.HiddenFor(model => model.OrderDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.HiddenFor(model => model.UserId, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.HiddenFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.HiddenFor(model => model.Pay, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.HiddenFor(model => model.Receiver, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.HiddenFor(model => model.PhoneReceive, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.HiddenFor(model => model.AddressReceive, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.HiddenFor(model => model.PaymentMethod, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.HiddenFor(model => model.TotalPay, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.OrderDate)
@@ -62,15 +83,6 @@
         <dd>
             @Html.DisplayFor(model => model.PaymentMethod)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalPay)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TotalPay)
-        </dd>
-
     </dl>
     <table class="table">
         <tr>
@@ -93,17 +105,17 @@
                 </td>
             </tr>
         }
-    <tr>
-        @if (User.IsInRole("Admin"))
-        {
-            <td>@Html.ActionLink("Back", "Index", null, new { @class = "btn btn-default " })</td>
-        }
-        else
-        {
-            <td>@Html.ActionLink("Back", "Index","Cart", null, new { @class = "btn btn-default " })</td>
-        }
-        <th>Tổng cộng</th>
-        <td>@Model.OrderDetails.Sum(o => o.SumPay)</td>
-    </tr>
+        <tr>
+            <td>@Html.ActionLink("Back", "Index","Cart", null, new { @class = "btn btn-default " })
+                <input type="submit" value="Hủy Đơn" class="btn btn-default" /></td>
+            <th>Tổng cộng</th>
+            <td>@Model.OrderDetails.Sum(o => o.SumPay)</td>
+        </tr>
     </table>
 </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

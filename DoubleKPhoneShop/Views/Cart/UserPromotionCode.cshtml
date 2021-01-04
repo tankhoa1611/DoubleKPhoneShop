@@ -1,0 +1,57 @@
+﻿@model DoubleKPhoneShop.Models.ApplicationUser
+@{
+    ViewBag.Title = "UserPromotionCode";
+    Layout = "~/Views/Shared/_Layout.cshtml";    
+}
+<br />
+<table class="table">
+    <tr>Thông tin cá nhân</tr>
+    <tr>
+        <th>@Html.DisplayNameFor(Model => Model.FullName)</th>
+        <td>@Html.DisplayFor(Model => Model.FullName)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(Model => Model.Email)</th>
+        <td>@Html.DisplayFor(Model => Model.Email)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(Model => Model.PhoneNumber)</th>
+        <td>@Html.DisplayFor(Model => Model.PhoneNumber)</td>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(Model => Model.Address)</th>
+        <td>@Html.DisplayFor(Model => Model.Address)</td>
+    </tr>
+    
+    <tr>
+        <th>@Html.DisplayNameFor(Model => Model.promotionCodeModels.First().Code)</th>
+        <th>@Html.DisplayNameFor(Model => Model.promotionCodeModels.First().UseDate)</th>
+        <th>@Html.DisplayNameFor(Model => Model.promotionCodeModels.First().Value)</th>
+        <th></th>
+    </tr>
+    @foreach (var code in Model.promotionCodeModels)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelcode => code.Code)</td>
+            <td>@Html.DisplayFor(modelcode => code.UseDate)</td>
+            <td>@Html.DisplayFor(modelcode => code.Value)</td>
+            @if (code.UseDate >= DateTime.Now)
+            {
+                <td>@Html.ActionLink("Sử dụng mã KM", "Payment", "Cart", new { id = code.CodeID }, new { @class = "btn btn-default" })</td>
+            }
+            else
+            {
+                <td>Mã đã hết hạn sử dụng</td>
+            }
+        </tr>
+
+    }
+    <tr>
+        <th>@Html.DisplayNameFor(Model => Model.Point)</th>
+        <td>@Html.DisplayFor(Model => Model.Point)</td>
+        <td></td>
+        <td>@Html.ActionLink("Sử dụng điểm tích lũy", "Payment", "Cart", new { point = Model.Point }, new { @class = "btn btn-default" })</td>
+    </tr>
+</table>
+
+
